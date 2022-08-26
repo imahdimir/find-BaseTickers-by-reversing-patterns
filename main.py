@@ -111,6 +111,7 @@ def main() :
 
   ##
   bt_rpo.rmdir()
+  id2t_rpo.rmdir()
 
 
   ##
