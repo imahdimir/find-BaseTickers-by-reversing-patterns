@@ -2,11 +2,9 @@
 
 
 import pandas as pd
-from pathlib import Path
 
 from githubdata import GithubData
 from mirutil import funcs as mf
-from mirutil.funcs import save_df_as_a_nice_xl as sxl
 from mirutil.funcs import read_data_according_to_type as rdata
 
 
@@ -72,27 +70,6 @@ def main() :
   df1['s'] = df1['-1'].apply(srch_tsetmc_check_eq)
 
   ##
-  df2 = pd.DataFrame()
-
-  for _, row in df1.iterrows():
-    _df = mf.search_tsetmc(row['-1'])
-    df2 = pd.concat([df2, _df])
-
-  ##
-  msk = df2[tic].isin(df1['-1'])
-  df3 = df2[msk]
-
-  ##
-  df3 = df3.drop_duplicates(subset = [tic, name])
-
-  ##
-  df4 = df3.drop_duplicates(subset = tic)
-
-  ##
-  msk = ~ df3[tic].isin(df1['-1'])
-  df4 = df3[msk]
-
-  ##
   df11 = df1[['-1']]
   df11 = df11.rename(columns = {'-1' : btic})
 
@@ -102,10 +79,14 @@ def main() :
 
   ##
   dfb = dfb.set_index(btic)
-  dfb.to_parquet(dfbp)
 
   ##
-  msg = '128 new , end of BaseTicker'
+  fp = bt_rpo.local_path / 'data.prq'
+  ##
+  dfb.to_parquet(fp)
+
+  ##
+  msg = '128 new , fmt changed to .prq'
 
   bt_rpo.commit_push(msg)
 
@@ -117,11 +98,6 @@ def main() :
   ##
 
 
-
-
-
-
-
-  ##
 ##
+
 ##
